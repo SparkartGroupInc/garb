@@ -91,7 +91,12 @@ module Garb
       end
 
       def oauth_user_request
-        @session.access_token.get(absolute_uri, {'GData-Version' => '3'})
+        # Check if this is a signet client (Google's own oauth client for service accounts uses Signet)
+        if @session.access_token.class.to_s == 'Signet::OAuth2::Client'
+          @session.access_token.fetch_protected_resource({uri: absolute_uri})
+        else
+          @session.access_token.get(absolute_uri, {'GData-Version' => '3'})
+        end        
       end
     end
   end
