@@ -94,10 +94,13 @@ module Garb
     end
 
     def build_default_params(profile, start_date, end_date)
+      formatted_start_date = start_date.is_a?(String) ? start_date : format_time(start_date)
+      formatted_end_date = end_date.is_a?(String) ? end_date : format_time(end_date)
+
       {
         'ids' => Garb.to_ga(profile.id),
-        'start-date' => format_time(start_date),
-        'end-date' => format_time(end_date)
+        'start-date' => formatted_start_date,
+        'end-date' => formatted_end_date
       }
     end
 
